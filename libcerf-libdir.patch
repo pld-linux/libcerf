@@ -1,0 +1,43 @@
+--- libcerf-1.13/CMakeLists.txt.orig	2019-02-28 15:36:35.000000000 +0100
++++ libcerf-1.13/CMakeLists.txt	2019-09-18 17:34:03.778179079 +0200
+@@ -5,6 +5,7 @@
+ 
+ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+ include(PreventInSourceBuilds)
++include(GNUInstallDirs)
+ 
+ if(NOT DEFINED BUILD_SHARED_LIBS)
+     option(BUILD_SHARED_LIBS "Build as shared library" ON)
+@@ -70,9 +71,10 @@
+ 
+ if(LIB_INSTALL)
+     set(destination ${CMAKE_INSTALL_PREFIX})
++    set(libdir ${CMAKE_INSTALL_FULL_LIBDIR})
+     configure_file("libcerf.pc.in" "libcerf.pc" @ONLY)
+     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcerf.pc"
+-        DESTINATION "${destination}/lib/pkgconfig/")
++        DESTINATION "${libdir}/pkgconfig/")
+ endif()
+ 
+ add_subdirectory(lib)
+--- libcerf-1.13/lib/CMakeLists.txt.orig	2019-02-06 21:42:30.000000000 +0100
++++ libcerf-1.13/lib/CMakeLists.txt	2019-09-18 17:34:23.131407567 +0200
+@@ -32,7 +32,7 @@
+ if (LIB_INSTALL)
+     install(
+         TARGETS ${lib} LIBRARY
+-        DESTINATION ${destination}/lib
++        DESTINATION ${libdir}
+         COMPONENT Libraries)
+     install(
+         FILES ${inc_files}
+--- libcerf-1.13/libcerf.pc.in.orig	2018-12-19 10:19:34.000000000 +0100
++++ libcerf-1.13/libcerf.pc.in	2019-09-18 17:34:55.581231771 +0200
+@@ -1,6 +1,6 @@
+ prefix=@destination@
+ exec_prefix=${prefix}
+-libdir=${prefix}/lib
++libdir=@libdir@
+ includedir=${prefix}/include
+ 
+ Name: libcerf
